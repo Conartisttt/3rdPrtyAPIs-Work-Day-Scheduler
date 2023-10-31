@@ -1,18 +1,37 @@
-
 const mainSection = $('#main');
+const timeDivsArr = mainSection.children();
+console.log(timeDivsArr)
+const storageArr = [];
+
+for (let i = 9; i < 18; i++) {
+  const storage = JSON.parse(localStorage.getItem("hour-" + i)) || "";
+  storageArr.push(storage);
+}
+
+for ( let i = 0; i < timeDivsArr.length - 3; i++) {
+  timeDivsArr[i].children[1].textContent = storageArr[i];
+}
+
+
+
+console.log(storageArr);
+
+
+
+
 mainSection.on('click', function (event) {
   const target = $(event.target);
   const targetElement = target[0];
   const targetParentDiv = target[0].parentElement
   const targetParentID = targetParentDiv.id;
   const targetTextArea = target[0].previousElementSibling
-  const textAreaValue = targetTextArea.value
   if (targetElement.matches("button")) {
     console.log(target);
     console.log(targetElement);
     console.log(targetParentDiv);
-    console.log(textAreaValue);
     console.log(targetParentID);
+    const textAreaValue = targetTextArea.value
+    localStorage.setItem(targetParentID, JSON.stringify(textAreaValue));
   }
 })
 
