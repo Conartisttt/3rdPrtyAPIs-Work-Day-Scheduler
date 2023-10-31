@@ -1,3 +1,23 @@
+
+const mainSection = $('#main');
+mainSection.on('click', function (event) {
+  const target = $(event.target);
+  const targetElement = target[0];
+  const targetParentDiv = target[0].parentElement
+  const targetParentID = targetParentDiv.id;
+  const targetTextArea = target[0].previousElementSibling
+  const textAreaValue = targetTextArea.value
+  if (targetElement.matches("button")) {
+    console.log(target);
+    console.log(targetElement);
+    console.log(targetParentDiv);
+    console.log(textAreaValue);
+    console.log(targetParentID);
+  }
+})
+
+
+
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
