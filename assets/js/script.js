@@ -1,6 +1,6 @@
 const mainSection = $('#main');
 const timeDivsArr = mainSection.children();
-console.log(timeDivsArr)
+// console.log(timeDivsArr)
 const storageArr = [];
 
 for (let i = 9; i < 18; i++) {
@@ -8,13 +8,13 @@ for (let i = 9; i < 18; i++) {
   storageArr.push(storage);
 }
 
-for ( let i = 0; i < timeDivsArr.length - 3; i++) {
+for (let i = 0; i < timeDivsArr.length - 3; i++) {
   timeDivsArr[i].children[1].textContent = storageArr[i];
 }
 
 
 
-console.log(storageArr);
+// console.log(storageArr);
 
 
 
@@ -26,14 +26,35 @@ mainSection.on('click', function (event) {
   const targetParentID = targetParentDiv.id;
   const targetTextArea = target[0].previousElementSibling
   if (targetElement.matches("button")) {
-    console.log(target);
-    console.log(targetElement);
-    console.log(targetParentDiv);
-    console.log(targetParentID);
+    // console.log(target);
+    // console.log(targetElement);
+    // console.log(targetParentDiv);
+    // console.log(targetParentID);
     const textAreaValue = targetTextArea.value
     localStorage.setItem(targetParentID, JSON.stringify(textAreaValue));
   }
 })
+
+const today = dayjs();
+$('#currentDay').text(today.format('MMMM D, YYYY'));
+
+let timerInterval;
+
+function setDate() {
+  setInterval(function () {
+
+    const today = dayjs();
+    $('#currentDay').text(today.format('MMMM D, YYYY'));
+
+  }, 60000);
+}
+
+setDate();
+
+//compare 24-hour dayjs time to each div ID. 
+//if div ID == 24hour code, then red
+//if div ID > 24 hour code, then green
+//if div ID < 24 hour code, then gray
 
 
 
