@@ -1,5 +1,11 @@
-const mainSection = $('#main');
-const timeDivsArr = mainSection.children();
+
+// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
+// the code isn't run until the browser has finished rendering all the elements
+// in the html.
+$(function () {
+
+  const mainSection = $('#main');
+const timeDivsArr = $('.time-block')
 // console.log(timeDivsArr)
 const storageArr = [];
 
@@ -8,16 +14,43 @@ for (let i = 9; i < 18; i++) {
   storageArr.push(storage);
 }
 
-for (let i = 0; i < timeDivsArr.length - 3; i++) {
+for (let i = 0; i < timeDivsArr.length; i++) {
   timeDivsArr[i].children[1].textContent = storageArr[i];
 }
 
-
-
-// console.log(storageArr);
-
-
-
+for (let i = 0; i < timeDivsArr.length; i++) {
+  const divID = timeDivsArr[i].id;
+  console.log(divID);
+  const hour = dayjs().format('H');
+  console.log(hour);
+  if (divID.length == 6) {
+    let divHour = parseInt(divID.slice(-1))
+    console.log(divHour);
+    if(divHour == hour){
+      timeDivsArr[i].classList.add('present');
+      timeDivsArr[i].classList.remove('future',  'past');
+    } if(divHour > hour){
+      timeDivsArr[i].classList.add('future');
+      timeDivsArr[i].classList.remove('past',  'present');
+    } else {
+      timeDivsArr[i].classList.add('past');
+      timeDivsArr[i].classList.remove('present',  'future');
+    }
+  } else {
+    let divHour = parseInt(divID.slice(-2));
+    console.log(divHour);
+    if(divHour == hour){
+      timeDivsArr[i].classList.add('present');
+      timeDivsArr[i].classList.remove('future',  'past');
+    } if(divHour > hour){
+      timeDivsArr[i].classList.add('future');
+      timeDivsArr[i].classList.remove('past',  'present');
+    } else {
+      timeDivsArr[i].classList.add('past');
+      timeDivsArr[i].classList.remove('present',  'future');
+    }
+  }
+}
 
 mainSection.on('click', function (event) {
   const target = $(event.target);
@@ -26,10 +59,6 @@ mainSection.on('click', function (event) {
   const targetParentID = targetParentDiv.id;
   const targetTextArea = target[0].previousElementSibling
   if (targetElement.matches("button")) {
-    // console.log(target);
-    // console.log(targetElement);
-    // console.log(targetParentDiv);
-    // console.log(targetParentID);
     const textAreaValue = targetTextArea.value
     localStorage.setItem(targetParentID, JSON.stringify(textAreaValue));
   }
@@ -37,8 +66,6 @@ mainSection.on('click', function (event) {
 
 const today = dayjs();
 $('#currentDay').text(today.format('MMMM D, YYYY'));
-
-let timerInterval;
 
 function setDate() {
   setInterval(function () {
@@ -51,17 +78,6 @@ function setDate() {
 
 setDate();
 
-//compare 24-hour dayjs time to each div ID. 
-//if div ID == 24hour code, then red
-//if div ID > 24 hour code, then green
-//if div ID < 24 hour code, then gray
-
-
-
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-$(function () {
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -81,3 +97,4 @@ $(function () {
   //
   // TODO: Add code to display the current date in the header of the page.
 });
+
