@@ -1,10 +1,3 @@
-
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-
-
-
 $(function () {
   const mainSectionJS = document.getElementById("main");
 
@@ -45,7 +38,7 @@ $(function () {
     }
   }
 
-
+  
   generateTimeDivs();
 
   const mainSection = $('#main');
@@ -112,11 +105,9 @@ $(function () {
     }
   }
 
-
-
   //Set Date Section
   const today = dayjs();
-  $('#currentDay').text(today.format('MMMM D, YYYY'));
+  $('#currentDay').text(today.format('dddd, MMMM D, YYYY'));
 
   function setDate() {
     setInterval(function () {
