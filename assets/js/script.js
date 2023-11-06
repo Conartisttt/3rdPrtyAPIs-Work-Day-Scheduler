@@ -2,11 +2,56 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
+
+
+
 $(function () {
+  const mainSectionJS = document.getElementById("main");
+
+  //Generate Time Divs Section
+  function generateTimeDivs() {
+    for (let i = 9; i < 18; i++) {
+      const timeDiv = document.createElement('div');
+      timeDiv.classList.add("row", "time-block");
+      timeDiv.setAttribute("id", "hour-" + i);
+      mainSectionJS.appendChild(timeDiv);
+
+      const hourDiv = document.createElement('div');
+      hourDiv.classList.add("col-2", "col-md-1", "hour", "text-center", "py-3");
+      if (i < 12) {
+        hourDiv.textContent = i + "AM";
+      } else if (i == 12) {
+        hourDiv.textContent = i + "PM";
+      } else {
+        hourDiv.textContent = i - 12 + "PM";
+      }
+      timeDiv.appendChild(hourDiv)
+
+      const hourTextArea = document.createElement("textarea");
+      hourTextArea.classList.add("col-8", "col-md-10", "description");
+      hourTextArea.setAttribute("rows", "3");
+      timeDiv.appendChild(hourTextArea);
+
+      const submitButton = document.createElement("button");
+      submitButton.classList.add("btn", "saveBtn", "col-2", "col-md-1");
+      submitButton.setAttribute("area-label", "save");
+      timeDiv.appendChild(submitButton);
+
+      const iElement = document.createElement("i");
+      iElement.classList.add("fas", "fa-save");
+      iElement.setAttribute("aria-hidden", "true");
+      submitButton.appendChild(iElement);
+
+    }
+  }
+
+
+  generateTimeDivs();
 
   const mainSection = $('#main');
   const timeDivsArr = $('.time-block')
-  // console.log(timeDivsArr)
+
+  // Local Storage Section
   const storageArr = [];
 
   for (let i = 9; i < 18; i++) {
@@ -18,7 +63,19 @@ $(function () {
     timeDivsArr[i].children[1].textContent = storageArr[i];
   }
 
+  mainSection.on('click', function (event) {
+    const target = $(event.target);
+    const targetElement = target[0];
+    const targetParentDiv = target[0].parentElement
+    const targetParentID = targetParentDiv.id;
+    const targetTextArea = target[0].previousElementSibling
+    if (targetElement.matches("button")) {
+      const textAreaValue = targetTextArea.value
+      localStorage.setItem(targetParentID, JSON.stringify(textAreaValue));
+    }
+  })
 
+  //Set Color Section
   function setColor() {
     for (let i = 0; i < timeDivsArr.length; i++) {
       const divID = timeDivsArr[i].id;
@@ -56,18 +113,8 @@ $(function () {
   }
 
 
-  mainSection.on('click', function (event) {
-    const target = $(event.target);
-    const targetElement = target[0];
-    const targetParentDiv = target[0].parentElement
-    const targetParentID = targetParentDiv.id;
-    const targetTextArea = target[0].previousElementSibling
-    if (targetElement.matches("button")) {
-      const textAreaValue = targetTextArea.value
-      localStorage.setItem(targetParentID, JSON.stringify(textAreaValue));
-    }
-  })
 
+  //Set Date Section
   const today = dayjs();
   $('#currentDay').text(today.format('MMMM D, YYYY'));
 
