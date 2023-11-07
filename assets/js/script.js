@@ -59,11 +59,17 @@ $(function () {
   mainSection.on('click', function (event) {
     const target = $(event.target);
     const targetElement = target[0];
-    const targetParentDiv = target[0].parentElement
-    const targetParentID = targetParentDiv.id;
-    const targetTextArea = target[0].previousElementSibling
     if (targetElement.matches("button")) {
-      const textAreaValue = targetTextArea.value
+      const targetParentDiv = target[0].parentElement;
+      const targetParentID = targetParentDiv.id;
+      const targetTextArea = target[0].previousElementSibling;
+      const textAreaValue = targetTextArea.value;
+      localStorage.setItem(targetParentID, JSON.stringify(textAreaValue));
+    } else if (targetElement.matches("i")) {
+      const targetParentDiv = target[0].parentElement.parentElement;
+      const targetParentID = targetParentDiv.id;
+      const targetTextArea = target[0].parentElement.previousElementSibling;
+      const textAreaValue = targetTextArea.value;
       localStorage.setItem(targetParentID, JSON.stringify(textAreaValue));
     }
   })
@@ -72,12 +78,9 @@ $(function () {
   function setColor() {
     for (let i = 0; i < timeDivsArr.length; i++) {
       const divID = timeDivsArr[i].id;
-      console.log(divID);
       const hour = dayjs().format('H');
-      console.log(hour);
       if (divID.length == 6) {
-        let divHour = parseInt(divID.slice(-1))
-        console.log(divHour);
+        let divHour = parseInt(divID.slice(-1));
         if (divHour == hour) {
           timeDivsArr[i].classList.add('present');
           timeDivsArr[i].classList.remove('future', 'past');
@@ -90,7 +93,6 @@ $(function () {
         }
       } else {
         let divHour = parseInt(divID.slice(-2));
-        console.log(divHour);
         if (divHour == hour) {
           timeDivsArr[i].classList.add('present');
           timeDivsArr[i].classList.remove('future', 'past');
